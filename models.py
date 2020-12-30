@@ -42,7 +42,7 @@ class Association(db.Model):
     __tablename__='association'
     user_name=db.Column(db.String(20),db.ForeignKey("user.name"),primary_key=True)
     calendar_id=db.Column(db.Integer,db.ForeignKey("calendar.id"),primary_key=True)
-    status=db.Column(db.String(20),default="Pending")
+    status=db.Column(db.String(20),default="pending")
 
 class Calendar(db.Model):
     __tablename__='calendar'
@@ -76,6 +76,7 @@ class Appointment(db.Model):
     def to_dict(self):
         return {
             'name':self.name,
+            'datestamp':self.date.replace(tzinfo=datetime.timezone.utc).timestamp(),
             'date':self.date.strftime("%Y/%m/%d %H:%M"),
             'duration':self.duration
         }
