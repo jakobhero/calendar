@@ -12,18 +12,15 @@ class User(db.Model):
     avail_start=db.Column(db.DateTime(),default=datetime.datetime(year=datetime.MINYEAR,month=1,day=1,hour=9,minute=0))
     avail_end=db.Column(db.DateTime(),default=datetime.datetime(year=datetime.MINYEAR,month=1,day=1,hour=18,minute=0))
     buffer=db.Column(db.SmallInteger,default=15)
-    calendars_all=db.relationship('Association',backref='invited', cascade="all, delete", lazy=True)
-    calendars_own=db.relationship('Calendar',backref='owner',cascade="all, delete",lazy=True)
+    calendars=db.relationship('Association',backref='user',cascade="all, delete",lazy=True)
 
     def __repr__(self):
         return 'Name: '+self.name+', Secret: '+self.secret
 
     def to_dict(self):
-        calendars_own,calendars_invited=[],[]
-        for calendar in self.calendars_own:
-            calendars_own.append(calendar.to_dict())
-        for association in self.calendars_all:
-            calendars_invited.append({
+        calendars=[]
+        for association in self.calendars:
+            calendars.append({
                 "calendar":association.calendar.to_dict(),
                 "status":association.status
             })
@@ -34,8 +31,7 @@ class User(db.Model):
                 'start':self.avail_start.strftime("%H:%M"),
                 'end':self.avail_end.strftime("%H:%M")
             },
-            'calendars_own':calendars_own,
-            'calendars_invited':calendars_invited
+            'calendars':calendars
         }
 
 class Association(db.Model):

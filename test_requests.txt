@@ -1,3 +1,6 @@
+#create a user
+curl -X POST http://127.0.0.1:5000/users --data "user=jakob"
+
 #show a user's data
 curl http://127.0.0.1:5000/user/jakob
 
