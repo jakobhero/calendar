@@ -1,20 +1,37 @@
 #create a user
 curl -X POST http://127.0.0.1:5000/users --data "user=jakob"
+curl -X POST http://127.0.0.1:5000/users --data "user=tahar"
 
 #show a user's data
 curl http://127.0.0.1:5000/user/jakob
 
 #add a new calendar
-curl -X POST http://127.0.0.1:5000/user/jakob --data "calendar=New Calendar"
+curl -X POST http://127.0.0.1:5000/user/jakob --data "calendar=first_calendar"
+curl -X POST http://127.0.0.1:5000/user/tahar --data "calendar=tahars_calendar"
 
 #to get all appointments
 curl http://127.0.0.1:5000/appointments/jakob/test_calendar
 
 #to add a new appointment
-curl http://127.0.0.1:5000/appointments/jakob/test_calendar --data "name=Test Meeting&start=0&dur=60"
+curl http://127.0.0.1:5000/appointments/jakob/first_calendar --data "name=Birthday Party&start=1635940800&dur=60"
 
 #to update an appointment (appointment with same name and date must exist in calendar)
-curl http://127.0.0.1:5000/appointments/jakob/test_calendar --data "name=Test Meeting&start=1000&dur=30"
+curl http://127.0.0.1:5000/appointments/jakob/first_calendar --data "name=Birthday Party&start=1635944400&dur=60"
 
 #to delete an appointment (appointment with same name and exact same timestamp must exist in calendar)
-curl -X DELETE http://127.0.0.1:5000/appointments/jakob/test_calendar --data "app_name=New Meeting&app_start=3723"
+curl -X DELETE http://127.0.0.1:5000/appointments/jakob/first_calendar --data "name=Birthday Party&start=1635944400"
+
+#to show availability
+curl http://127.0.0.1:5000/availability/jakob --data "user=tahar&days_ahead=5"
+
+#to book an appointment
+curl http://127.0.0.1:5000/book/jakob/first_calendar --data "user=tahar&name=Birthday Party&start=1635940800&dur=60"
+
+#to check whether invitation has been received by tahar
+curl http://127.0.0.1:5000/user/tahar
+
+#share a calendar
+curl -X POST http://127.0.0.1:5000/share/tahar/tahars_calendar --data "user=jakob"
+
+#check to see whether tahars invite to the calendar was received by jakob
+curl http://127.0.0.1:5000/user/jakob
