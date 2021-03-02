@@ -433,7 +433,7 @@ def slot_available(user,appointments,unix_start,unix_end):
 
 
 
-api.add_resource(Users,'/users')
+api.add_resource(Users,'/users','/')
 api.add_resource(User,'/user/<user_name>')
 api.add_resource(Appointment,'/appointments/<user_name>/<calendar_name>')
 api.add_resource(Search,'/search/<user_name>')
